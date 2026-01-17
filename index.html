@@ -38,14 +38,16 @@
             position: relative; text-align: left;
         }
         .card:active { transform: scale(0.98); background: rgba(255,255,255,0.08); }
+        .card:hover { border-color: rgba(255,255,255,0.3); }
 
-        .btn-icon { font-size: 2rem; width: 40px; text-align: center; }
+        .btn-icon { font-size: 1.8rem; width: 40px; text-align: center; }
         .text-group { flex: 1; }
         .btn-title { font-weight: 700; font-size: 1rem; color: #fff; display: block; }
         .btn-sub { font-size: 0.75rem; color: #94a3b8; display: block; margin-top: 2px; }
 
         .android-icon { color: #3DDC84; }
-        .ios-icon { color: #007AFF; } /* Blue for generic web */
+        .ios-icon { color: #fff; } 
+        .pc-icon { color: #a855f7; } /* Purple for Desktop */
 
         /* --- RECOMMENDATION BADGES --- */
         .recommended { border: 2px solid var(--gold); background: rgba(242, 162, 12, 0.05); }
@@ -54,6 +56,7 @@
             background: var(--gold); color: #000; font-weight: 700; 
             font-size: 0.65rem; padding: 3px 8px; border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: none; /* Hidden by default, toggled by JS */
         }
 
         /* --- INSTALL GUIDES --- */
@@ -83,6 +86,7 @@
         <p>Ministry Management System</p>
 
         <a href="https://firebasestorage.googleapis.com/v0/b/fob-database-139d1.firebasestorage.app/o/updates%2FShepherdNetv_1.8.0.apk?alt=media&token=bbc53c2d-f162-42e2-b7c7-a285349889ab" download class="card" id="androidBtn">
+            <div class="rec-badge">RECOMMENDED</div>
             <i class="fa-brands fa-android btn-icon android-icon"></i>
             <div class="text-group">
                 <span class="btn-title">Download App</span>
@@ -91,11 +95,20 @@
         </a>
 
         <a href="https://fob-database-139d1.web.app/" class="card" id="iosBtn">
-            <div class="rec-badge" id="webBadge" style="display:none;">RECOMMENDED</div>
-            <i class="fa-brands fa-apple btn-icon ios-icon" style="color:#fff;"></i>
+            <div class="rec-badge">RECOMMENDED</div>
+            <i class="fa-brands fa-apple btn-icon ios-icon"></i>
             <div class="text-group">
                 <span class="btn-title">Launch Web App</span>
-                <span class="btn-sub">For iPhone, iPad & PC</span>
+                <span class="btn-sub">For iPhone & iPad</span>
+            </div>
+        </a>
+
+        <a href="https://fob-database-139d1.web.app/" class="card" id="desktopBtn">
+            <div class="rec-badge">RECOMMENDED</div>
+            <i class="fa-solid fa-laptop btn-icon pc-icon"></i>
+            <div class="text-group">
+                <span class="btn-title">Open on Computer</span>
+                <span class="btn-sub">For Mac & Windows PC</span>
             </div>
         </a>
 
@@ -143,7 +156,11 @@
             <div class="guide-title"><i class="fa-solid fa-laptop"></i> Desktop Access</div>
             <div class="step">
                 <i class="fa-solid fa-check"></i>
-                <span>Simply click <strong>Launch Web App</strong> and bookmark the page <span class="highlight-icon">Ctrl + D</span> for easy access.</span>
+                <span>Click <strong>Open on Computer</strong> to launch the system.</span>
+            </div>
+            <div class="step">
+                <i class="fa-solid fa-star"></i>
+                <span><strong>Tip:</strong> Press <span class="highlight-icon">Ctrl + D</span> (Windows) or <span class="highlight-icon">Cmd + D</span> (Mac) to bookmark it for easy access.</span>
             </div>
         </div>
 
@@ -155,7 +172,7 @@
         
         const androidBtn = document.getElementById('androidBtn');
         const iosBtn = document.getElementById('iosBtn');
-        const webBadge = document.getElementById('webBadge');
+        const desktopBtn = document.getElementById('desktopBtn');
         
         const androidGuide = document.getElementById('androidGuide');
         const iosGuide = document.getElementById('iosGuide');
@@ -164,21 +181,19 @@
         if (/android/i.test(userAgent)) {
             // --- ANDROID USER ---
             androidBtn.classList.add('recommended');
-            androidBtn.innerHTML += `<div class="rec-badge">RECOMMENDED</div>`;
+            androidBtn.querySelector('.rec-badge').style.display = 'block';
             androidGuide.style.display = 'block';
             
         } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
             // --- IOS USER ---
             iosBtn.classList.add('recommended');
-            webBadge.style.display = 'block';
-            
-            // Adjust styling for iOS button to look "Native"
-            iosBtn.querySelector('.ios-icon').style.color = '#fff'; 
+            iosBtn.querySelector('.rec-badge').style.display = 'block';
             iosGuide.style.display = 'block';
 
         } else {
-            // --- PC / OTHER USER ---
-            iosBtn.classList.add('recommended'); // Web app is better for PC
+            // --- PC / MAC / LAPTOP USER ---
+            desktopBtn.classList.add('recommended');
+            desktopBtn.querySelector('.rec-badge').style.display = 'block';
             pcGuide.style.display = 'block';
         }
     </script>
